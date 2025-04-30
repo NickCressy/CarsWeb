@@ -1,5 +1,31 @@
 {% extends "main/base.html" %}
+{% load widget_tweaks %}
 {% block content %}
-    <h1>Welcome to CarsWeb</h1>
-    <p>This is the login page.</p>
+
+<div class="main-wrapper">
+    <div class="col-12 col-md-5 card-style">
+        <h2 class="title-text">🚗 Welcome Back to CarsWeb!</h2>
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                {{ form.username|add_class:"form-control" }}
+                {% if form.username.errors %}
+                    <div class="text-danger small">{{ form.username.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+                {{ form.password|add_class:"form-control" }}
+                {% if form.password.errors %}
+                    <div class="text-danger small">{{ form.password.errors }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-theme w-100">🔑 Login</button>
+        </form>
+        <p class="text-center mt-3">Don't have an account? <a href="/signup/">Create Account</a> 🚀</p>
+    </div>
+</div>
 {% endblock %}
