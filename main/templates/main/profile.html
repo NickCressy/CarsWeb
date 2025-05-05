@@ -1,9 +1,73 @@
 {% extends "main/base.html" %}
 {% block content %}
-<div class="main-wrapper">
-    <div class="col-12 col-md-6 card-style text-center">
-        <h2 class="title-text">👋 Welcome, {{ user.username }}!</h2>
-        <p>This is your CarsWeb profile page.</p>
+<div class="main-wrapper container">
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-12 col-md-8 card-style text-center">
+            <h2 class="title-text text-center">Welcome, {{ user.username }}!</h2>
+            <p>Here are your cars</p>
+        </div>
     </div>
-</div>
+
+    <div class="row">
+        <!-- Search for a Car in Inventory -->
+         <form method="get" class="d-flex justify-content-center mb-3">
+            <input type="text" name="search" class="form-control me-2 w-75" pl
+        <!-- Code For Owned Cars List -->
+         <div class="col-md-6">
+            <h4 class="text-white text-center">Inventory</h4>
+            <form method="post" action="{% url 'add_car' %}" class="d-flex justify-content-center mb-3">
+                {% csrf_token %}
+                <input type="hidden" name="list_type" value="owned">
+                <input type="text" name="car_name" class="form-control me-2" placeholder="Add Car To Inventory" required>
+                <button type="submit" class="btn btn-theme">Add</button>
+            </form>
+            <ul class="list-group">
+                {% for car in owned_cars %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ car.name }}
+                        <div>
+                            <form method="post" action="{% url 'delete_car' car.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No Inventory.</li>
+                {% endfor%}
+                </ul>
+            </div>
+
+        <!-- Code For Wanted Cars-->
+        <div class="col-md-6">
+            <h4 class="text-white text-center">Cars To Purchase.</h4>
+            <form method="post" action="{% url 'add_car' %}" class="d-flex justify-content-center mb-3">
+                {% csrf_token %}
+                <input type="hidden" name="list_type" value="wanted">
+                <input type="text" name="car_name" class="form-control me-2" placeholder="Add Car To Purchase List" required>
+                <button type="submit" class="btn btn-theme">Add</button>
+            </form>
+            <ul class="list-group">
+                {% for car in wanted_cars %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ car.name }}
+                        <div>
+                            <form method="post" action="{% url 'move_car_to_owned' car.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm">Move to Owned</button>
+                            </form>
+                            <form method="post" action="{% url 'delete_car' car.id %}" class="d-inline">
+                                {%csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No Cars To Purchase.</li>
+                        {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
 {% endblock %}
