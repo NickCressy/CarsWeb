@@ -33,8 +33,19 @@ def signup_view(request):
     return render(request, 'main/signup.html', {'form': form})
 
 def profile_view(request):
-    owned_cars = Car.objects.filter(owner=request.user, list_type='owned')
+    searchQ = request.GET.get('search', '').strip()
+
+    if searchQ:
+        owned_cars = Car.objects.filter(
+            owner=request.user,
+            list_type='owned',
+            name__icontains=searchQ
+        )
+    else:
+        owned_cars = Car.objects.filter(owner=request.user, list_type='owned')
+
     wanted_cars = Car.objects.filter(owner=request.user, list_type='wanted')
+    
     return render(request, 'main/profile.html', {
         'owned_cars': owned_cars,
         'wanted_cars': wanted_cars,

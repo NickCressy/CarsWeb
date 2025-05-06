@@ -10,9 +10,12 @@
     </div>
 
     <div class="row">
-        <!-- Search for a Car in Inventory -->
+        <!-- Code To Search for a Car in Inventory -->
          <form method="get" class="d-flex justify-content-center mb-3">
-            <input type="text" name="search" class="form-control me-2 w-75" pl
+            <input type="text" name="search" class="form-control me-2 w-75" placeholder="Search Inventory" value="{{ request.GET.search }}">
+            <button type="submit" class="btn btn-theme">Search</button>
+         </form>
+
         <!-- Code For Owned Cars List -->
          <div class="col-md-6">
             <h4 class="text-white text-center">Inventory</h4>
